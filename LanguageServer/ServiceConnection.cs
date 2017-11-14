@@ -21,6 +21,14 @@ namespace LanguageServer
             internal set => _token.Value = value;
         }
 
+        protected ServiceConnection(Stream input, Stream output, Action<string> trace)
+            : base(input, output, trace)
+        {
+            _proxy = new Proxy(this);
+            var provider = new ConnectionHandlerProvider();
+            provider.AddHandlers(Handlers, this.GetType());
+        }
+
         protected ServiceConnection(Stream input, Stream output)
             : base(input, output)
         {

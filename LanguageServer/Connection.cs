@@ -2,6 +2,7 @@
 using LanguageServer.Parameters.General;
 using Matarillo.IO;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,13 +21,22 @@ namespace LanguageServer
         private Stream output;
         private readonly object outputLock = new object();
         private readonly Handlers handlers = new Handlers();
+        private readonly Action<string> trace;
 
         internal Handlers Handlers => handlers;
+
+        public Connection(Stream input, Stream output, Action<string> trace)
+        {
+            this.input = new ProtocolReader(input);
+            this.output = output;
+            this.trace = trace;
+        }
 
         public Connection(Stream input, Stream output)
         {
             this.input = new ProtocolReader(input);
             this.output = output;
+            this.trace = _ => { };
         }
 
         public async Task Listen()
@@ -154,15 +164,21 @@ namespace LanguageServer
                 output.Write(utf8, 0, utf8.Length);
                 output.Flush();
             }
+            trace(string.Format("{0}: <out>\r\n", DateTime.Now));
+            trace($"Content-Length: {utf8.Length}\r\n");
+            trace("\r\n");
+            trace(json + "\r\n");
         }
 
         private async Task<string> Read()
         {
+            trace(string.Format("{0}: <in>\r\n", DateTime.Now));
             var contentLength = 0;
             var headerBytes = await input.ReadToSeparatorAsync(separator);
             while (headerBytes.Length != 0)
             {
                 var headerLine = Encoding.ASCII.GetString(headerBytes);
+                trace(headerLine + "\r\n");
                 var position = headerLine.IndexOf(": ");
                 if (position >= 0)
                 {
@@ -175,12 +191,15 @@ namespace LanguageServer
                 }
                 headerBytes = await input.ReadToSeparatorAsync(separator);
             }
+            trace("\r\n");
             if (contentLength == 0)
             {
                 return "";
             }
             var contentBytes = await input.ReadBytesAsync(contentLength);
-            return Encoding.UTF8.GetString(contentBytes);
+            var content = Encoding.UTF8.GetString(contentBytes);
+            trace(content + "\r\n");
+            return content;
         }
     }
 }
