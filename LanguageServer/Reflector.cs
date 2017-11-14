@@ -95,7 +95,7 @@ namespace LanguageServer
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex);
+                    Log.Error(ex.ToString());
                     result = Result<TResult, TResponseError>.Error(Message.InternalError<TResponseError>());
                 }
                 return new ResponseMessage<TResult, TResponseError>
@@ -129,7 +129,7 @@ namespace LanguageServer
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex);
+                    Log.Error(ex.ToString());
                     result = Result<TResult, TResponseError>.Error(Message.InternalError<TResponseError>());
                 }
                 return new ResponseMessage<TResult, TResponseError>
@@ -163,7 +163,7 @@ namespace LanguageServer
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex);
+                    Log.Error(ex.ToString());
                     result = VoidResult<TResponseError>.Error(Message.InternalError<TResponseError>());
                 }
                 return new VoidResponseMessage<TResponseError>
@@ -194,7 +194,7 @@ namespace LanguageServer
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex);
+                    Log.Error(ex.ToString());
                 }
             };
         }
@@ -219,7 +219,7 @@ namespace LanguageServer
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex);
+                    Log.Error(ex.ToString());
                 }
             };
         }
