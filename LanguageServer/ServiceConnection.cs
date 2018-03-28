@@ -7,6 +7,7 @@ using LanguageServer.Parameters.Workspace;
 using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LanguageServer
 {
@@ -32,7 +33,7 @@ namespace LanguageServer
         #region General
 
         [JsonRpcMethod("initialize")]
-        protected virtual Result<InitializeResult, ResponseError<InitializeErrorData>> Initialize(InitializeParams @params)
+        protected virtual Task<Result<InitializeResult, ResponseError<InitializeErrorData>>> Initialize(InitializeParams @params)
         {
             throw new NotImplementedException();
         }
@@ -43,7 +44,7 @@ namespace LanguageServer
         }
 
         [JsonRpcMethod("shutdown")]
-        protected virtual VoidResult<ResponseError> Shutdown()
+        protected virtual Task<VoidResult<ResponseError>> Shutdown()
         {
             throw new NotImplementedException();
         }
@@ -72,7 +73,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: void
         [JsonRpcMethod("workspace/symbol")]
-        protected virtual Result<SymbolInformation[], ResponseError> Symbol(WorkspaceSymbolParams @params)
+        protected virtual Task<Result<SymbolInformation[], ResponseError>> Symbol(WorkspaceSymbolParams @params)
         {
             throw new NotImplementedException();
         }
@@ -80,7 +81,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: ExecuteCommandRegistrationOptions
         [JsonRpcMethod("workspace/executeCommand")]
-        protected virtual Result<dynamic, ResponseError> ExecuteCommand(ExecuteCommandParams @params)
+        protected virtual Task<Result<dynamic, ResponseError>> ExecuteCommand(ExecuteCommandParams @params)
         {
             throw new NotImplementedException();
         }
@@ -109,7 +110,7 @@ namespace LanguageServer
 
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/willSaveWaitUntil")]
-        protected virtual Result<TextEdit[], ResponseError> WillSaveWaitUntilTextDocument(WillSaveTextDocumentParams @params)
+        protected virtual Task<Result<TextEdit[], ResponseError>> WillSaveWaitUntilTextDocument(WillSaveTextDocumentParams @params)
         {
             throw new NotImplementedException();
         }
@@ -129,13 +130,13 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: CompletionRegistrationOptions
         [JsonRpcMethod("textDocument/completion")]
-        protected virtual Result<ArrayOrObject<CompletionItem, CompletionList>, ResponseError> Completion(TextDocumentPositionParams @params)
+        protected virtual Task<Result<ArrayOrObject<CompletionItem, CompletionList>, ResponseError>> Completion(TextDocumentPositionParams @params)
         {
             throw new NotImplementedException();
         }
 
         [JsonRpcMethod("completionItem/resolve")]
-        protected virtual Result<CompletionItem, ResponseError> ResolveCompletionItem(CompletionItem @params)
+        protected virtual Task<Result<CompletionItem, ResponseError>> ResolveCompletionItem(CompletionItem @params)
         {
             throw new NotImplementedException();
         }
@@ -143,7 +144,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/hover")]
-        protected virtual Result<Hover, ResponseError> Hover(TextDocumentPositionParams @params)
+        protected virtual Task<Result<Hover, ResponseError>> Hover(TextDocumentPositionParams @params)
         {
             throw new NotImplementedException();
         }
@@ -151,7 +152,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: SignatureHelpRegistrationOptions
         [JsonRpcMethod("textDocument/signatureHelp")]
-        protected virtual Result<SignatureHelp, ResponseError> SignatureHelp(TextDocumentPositionParams @params)
+        protected virtual Task<Result<SignatureHelp, ResponseError>> SignatureHelp(TextDocumentPositionParams @params)
         {
             throw new NotImplementedException();
         }
@@ -159,7 +160,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/references")]
-        protected virtual Result<Location[], ResponseError> FindReferences(ReferenceParams @params)
+        protected virtual Task<Result<Location[], ResponseError>> FindReferences(ReferenceParams @params)
         {
             throw new NotImplementedException();
         }
@@ -167,7 +168,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/documentHighlight")]
-        protected virtual Result<DocumentHighlight[], ResponseError> DocumentHighlight(TextDocumentPositionParams @params)
+        protected virtual Task<Result<DocumentHighlight[], ResponseError>> DocumentHighlight(TextDocumentPositionParams @params)
         {
             throw new NotImplementedException();
         }
@@ -175,7 +176,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/documentSymbol")]
-        protected virtual Result<SymbolInformation[], ResponseError> DocumentSymbols(DocumentSymbolParams @params)
+        protected virtual Task<Result<SymbolInformation[], ResponseError>> DocumentSymbols(DocumentSymbolParams @params)
         {
             throw new NotImplementedException();
         }
@@ -183,7 +184,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/formatting")]
-        protected virtual Result<TextEdit[], ResponseError> DocumentFormatting(DocumentFormattingParams @params)
+        protected virtual Task<Result<TextEdit[], ResponseError>> DocumentFormatting(DocumentFormattingParams @params)
         {
             throw new NotImplementedException();
         }
@@ -191,7 +192,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/rangeFormatting")]
-        protected virtual Result<TextEdit[], ResponseError> DocumentRangeFormatting(DocumentRangeFormattingParams @params)
+        protected virtual Task<Result<TextEdit[], ResponseError>> DocumentRangeFormatting(DocumentRangeFormattingParams @params)
         {
             throw new NotImplementedException();
         }
@@ -199,7 +200,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: DocumentOnTypeFormattingRegistrationOptions
         [JsonRpcMethod("textDocument/onTypeFormatting")]
-        protected virtual Result<TextEdit[], ResponseError> DocumentOnTypeFormatting(DocumentOnTypeFormattingParams @params)
+        protected virtual Task<Result<TextEdit[], ResponseError>> DocumentOnTypeFormatting(DocumentOnTypeFormattingParams @params)
         {
             throw new NotImplementedException();
         }
@@ -207,7 +208,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/definition")]
-        protected virtual Result<ArrayOrObject<Location, Location>, ResponseError> GotoDefinition(TextDocumentPositionParams @params)
+        protected virtual Task<Result<ArrayOrObject<Location, Location>, ResponseError>> GotoDefinition(TextDocumentPositionParams @params)
         {
             throw new NotImplementedException();
         }
@@ -215,7 +216,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/codeAction")]
-        protected virtual Result<Command[], ResponseError> CodeAction(CodeActionParams @params)
+        protected virtual Task<Result<Command[], ResponseError>> CodeAction(CodeActionParams @params)
         {
             throw new NotImplementedException();
         }
@@ -223,13 +224,13 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: CodeLensRegistrationOptions
         [JsonRpcMethod("textDocument/codeLens")]
-        protected virtual Result<CodeLens[], ResponseError> CodeLens(CodeLensParams @params)
+        protected virtual Task<Result<CodeLens[], ResponseError>> CodeLens(CodeLensParams @params)
         {
             throw new NotImplementedException();
         }
 
         [JsonRpcMethod("codeLens/resolve")]
-        protected virtual Result<CodeLens, ResponseError> ResolveCodeLens(CodeLens @params)
+        protected virtual Task<Result<CodeLens, ResponseError>> ResolveCodeLens(CodeLens @params)
         {
             throw new NotImplementedException();
         }
@@ -237,13 +238,13 @@ namespace LanguageServer
         // dynam0icRegistration?: boolean;
         // Registration Options: DocumentLinkRegistrationOptions
         [JsonRpcMethod("textDocument/documentLink")]
-        protected virtual Result<DocumentLink[], ResponseError> DocumentLink(DocumentLinkParams @params)
+        protected virtual Task<Result<DocumentLink[], ResponseError>> DocumentLink(DocumentLinkParams @params)
         {
             throw new NotImplementedException();
         }
 
         [JsonRpcMethod("documentLink/resolve")]
-        protected virtual Result<DocumentLink, ResponseError> ResolveDocumentLink(DocumentLink @params)
+        protected virtual Task<Result<DocumentLink, ResponseError>> ResolveDocumentLink(DocumentLink @params)
         {
             throw new NotImplementedException();
         }
@@ -251,7 +252,7 @@ namespace LanguageServer
         // dynamicRegistration?: boolean;
         // Registration Options: TextDocumentRegistrationOptions
         [JsonRpcMethod("textDocument/rename")]
-        protected virtual Result<WorkspaceEdit, ResponseError> Rename(RenameParams @params)
+        protected virtual Task<Result<WorkspaceEdit, ResponseError>> Rename(RenameParams @params)
         {
             throw new NotImplementedException();
         }

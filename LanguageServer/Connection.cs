@@ -63,7 +63,7 @@ namespace LanguageServer
             return true;
         }
 
-        private void HandleRequest(string method, NumberOrString id, string json)
+        private async void HandleRequest(string method, NumberOrString id, string json)
         {
             if (handlers.TryGetRequestHandler(method, out var handler))
             {
@@ -72,7 +72,7 @@ namespace LanguageServer
                     var tokenSource = new CancellationTokenSource();
                     handlers.AddCancellationTokenSource(id, tokenSource);
                     var request = Serializer.Instance.Deserialize(handler.RequestType, json);
-                    var requestResponse = (ResponseMessageBase)handler.Handle(request, this, tokenSource.Token);
+                    var requestResponse = (ResponseMessageBase)await handler.Handle(request, this, tokenSource.Token);
                     handlers.RemoveCancellationTokenSource(id);
                     requestResponse.id = id;
                     SendMessage(requestResponse);
@@ -83,6 +83,13 @@ namespace LanguageServer
                     var requestErrorResponse = Reflector.CreateErrorResponse(handler.ResponseType, ex.ToString());
                     SendMessage(requestErrorResponse);
                 }
+            }
+            else
+            {
+                SendMessage(new VoidResponseMessage<ResponseError> {
+                    id = id,
+                    error = Message.MethodNotFound()
+                });
             }
         }
 
@@ -114,17 +121,19 @@ namespace LanguageServer
             }
         }
 
-        public void SendRequest<TRequest, TResponse>(TRequest request, Action<TResponse> responseHandler)
-            where TRequest : RequestMessageBase
+        public async Task<TResponse> SendRequest<TResponse>(RequestMessageBase request)
             where TResponse : ResponseMessageBase
         {
-            var handler = new ResponseHandler(request.id, typeof(TResponse), o => responseHandler((TResponse)o));
+            var tcs = new TaskCompletionSource<TResponse>();
+            var handler = new ResponseHandler(request.id, typeof(TResponse), o => tcs.SetResult((TResponse)o));
             handlers.AddResponseHandler(handler);
             SendMessage(request);
+            return await tcs.Task;
         }
 
+
         public void SendNotification<TNotification>(TNotification notification)
-            where TNotification : NotificationMessageBase
+          where TNotification : NotificationMessageBase
         {
             SendMessage(notification);
         }

@@ -26,7 +26,7 @@ namespace LanguageServer
         private readonly T _success;
         private readonly TError _error;
 
-        private Result(ResultTag tag, T success, TError error)
+        internal Result(ResultTag tag, T success, TError error)
         {
             _tag = tag;
             _success = success;

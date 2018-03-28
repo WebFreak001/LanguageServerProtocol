@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LanguageServer
 {
@@ -117,13 +118,13 @@ namespace LanguageServer
             _handler = handler;
         }
 
-        internal object Handle(object request, Connection connection, CancellationToken token)
+        internal Task<object> Handle(object request, Connection connection, CancellationToken token)
         {
             return _handler(request, connection, token);
         }
     }
 
-    internal delegate object RequestHandlerDelegate(object request, Connection connection, CancellationToken token);
+    internal delegate Task<object> RequestHandlerDelegate(object request, Connection connection, CancellationToken token);
 
     internal class NotificationHandler
     {

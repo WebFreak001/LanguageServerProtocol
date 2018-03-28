@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace LanguageServer
 {
@@ -13,6 +14,8 @@ namespace LanguageServer
             if (parameters.Length == 1 && parameters[0].IsIn) return false;
             var retType = method.ReturnType;
             if (retType == typeof(void)) return false;
+            if (retType.GetGenericTypeDefinition() == typeof(Task<>))
+                retType = retType.GenericTypeArguments[0];
             var openRetType = retType.GetGenericTypeDefinition();
             return (openRetType == typeof(Result<,>)) || (openRetType == typeof(VoidResult<>));
         }
@@ -23,7 +26,7 @@ namespace LanguageServer
             if (parameters.Length > 1) return false;
             if (parameters.Length == 1 && parameters[0].IsIn) return false;
             var retType = method.ReturnType;
-            return (retType == typeof(void));
+            return (retType == typeof(void)) || (retType == typeof(Task));
         }
 
         internal static Type GetRequestType(MethodInfo method)
@@ -46,6 +49,8 @@ namespace LanguageServer
         internal static Type GetResponseType(MethodInfo method)
         {
             var retType = method.ReturnType;
+            if (retType.GetGenericTypeDefinition() == typeof(Task<>))
+                retType = retType.GenericTypeArguments[0];
             var openRetType = retType.GetGenericTypeDefinition();
             if (openRetType == typeof(Result<,>))
             {
@@ -98,12 +103,12 @@ namespace LanguageServer
                     Console.Error.WriteLine(ex);
                     result = Result<TResult, TResponseError>.Error(Message.InternalError<TResponseError>());
                 }
-                return new ResponseMessage<TResult, TResponseError>
+                return Task.FromResult((object)new ResponseMessage<TResult, TResponseError>
                 {
                     id = request.id,
                     result = result.SuccessValue,
                     error = result.ErrorValue
-                };
+                });
             };
         }
 
@@ -132,12 +137,12 @@ namespace LanguageServer
                     Console.Error.WriteLine(ex);
                     result = Result<TResult, TResponseError>.Error(Message.InternalError<TResponseError>());
                 }
-                return new ResponseMessage<TResult, TResponseError>
+                return Task.FromResult((object)new ResponseMessage<TResult, TResponseError>
                 {
                     id = request.id,
                     result = result.SuccessValue,
                     error = result.ErrorValue
-                };
+                });
             };
         }
 
@@ -166,6 +171,108 @@ namespace LanguageServer
                     Console.Error.WriteLine(ex);
                     result = VoidResult<TResponseError>.Error(Message.InternalError<TResponseError>());
                 }
+                return Task.FromResult((object)new VoidResponseMessage<TResponseError>
+                {
+                    id = request.id,
+                    error = result.ErrorValue
+                });
+            };
+        }
+
+        private static MethodInfo GetFactoryForRequest2(MethodInfo method, Type declaringType, Type responseErrorType)
+        {
+            return typeof(Reflector).GetTypeInfo().GetDeclaredMethod(nameof(ForRequest2)).MakeGenericMethod(declaringType, responseErrorType);
+        }
+
+
+        private static RequestHandlerDelegate ForRequestAsync4<T, TParams, TResult, TResponseError>(Type targetType, MethodInfo method, HandlerProvider provider)
+            where TResponseError : ResponseError, new()
+        {
+            var deleType = typeof(Func<T, TParams, Task<Result<TResult, TResponseError>>>);
+            var func = (Func<T, TParams, Task<Result<TResult, TResponseError>>>)method.CreateDelegate(deleType);
+
+            return async (r, c, t) =>
+            {
+                var request = (RequestMessage<TParams>)r;
+                var target = provider.CreateTargetObject(targetType, c, t);
+                Result<TResult, TResponseError> result;
+                try
+                {
+                    result = await func((T)target, request.@params);
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex);
+                    result = Result<TResult, TResponseError>.Error(Message.InternalError<TResponseError>());
+                }
+                return new ResponseMessage<TResult, TResponseError>
+                {
+                    id = request.id,
+                    result = result.SuccessValue,
+                    error = result.ErrorValue
+                };
+            };
+        }
+
+        private static MethodInfo GetFactoryForRequestAsync4(MethodInfo method, Type declaringType, Type paramsType, Type resultType, Type responseErrorType)
+        {
+            return typeof(Reflector).GetTypeInfo().GetDeclaredMethod(nameof(ForRequestAsync4)).MakeGenericMethod(declaringType, paramsType, resultType, responseErrorType);
+        }
+
+        private static RequestHandlerDelegate ForRequestAsync3<T, TResult, TResponseError>(Type targetType, MethodInfo method, HandlerProvider provider)
+            where TResponseError : ResponseError, new()
+        {
+            var deleType = typeof(Func<T, Task<Result<TResult, TResponseError>>>);
+            var func = (Func<T, Task<Result<TResult, TResponseError>>>)method.CreateDelegate(deleType);
+
+            return async (r, c, t) =>
+            {
+                var request = (VoidRequestMessage)r;
+                var target = provider.CreateTargetObject(targetType, c, t);
+                Result<TResult, TResponseError> result;
+                try
+                {
+                    result = await func((T)target);
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex);
+                    result = Result<TResult, TResponseError>.Error(Message.InternalError<TResponseError>());
+                }
+                return new ResponseMessage<TResult, TResponseError>
+                {
+                    id = request.id,
+                    result = result.SuccessValue,
+                    error = result.ErrorValue
+                };
+            };
+        }
+
+        private static MethodInfo GetFactoryForRequestAsync3(MethodInfo method, Type declaringType, Type resultType, Type responseErrorType)
+        {
+            return typeof(Reflector).GetTypeInfo().GetDeclaredMethod(nameof(ForRequestAsync3)).MakeGenericMethod(declaringType, resultType, responseErrorType);
+        }
+
+        private static RequestHandlerDelegate ForRequestAsync2<T, TResponseError>(Type targetType, MethodInfo method, HandlerProvider provider)
+            where TResponseError : ResponseError, new()
+        {
+            var deleType = typeof(Func<T, Task<VoidResult<TResponseError>>>);
+            var func = (Func<T, Task<VoidResult<TResponseError>>>)method.CreateDelegate(deleType);
+
+            return async (r, c, t) =>
+            {
+                var request = (VoidRequestMessage)r;
+                var target = provider.CreateTargetObject(targetType, c, t);
+                VoidResult<TResponseError> result;
+                try
+                {
+                    result = await func((T)target);
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex);
+                    result = VoidResult<TResponseError>.Error(Message.InternalError<TResponseError>());
+                }
                 return new VoidResponseMessage<TResponseError>
                 {
                     id = request.id,
@@ -174,9 +281,9 @@ namespace LanguageServer
             };
         }
 
-        private static MethodInfo GetFactoryForRequest2(MethodInfo method, Type declaringType, Type responseErrorType)
+        private static MethodInfo GetFactoryForRequestAsync2(MethodInfo method, Type declaringType, Type responseErrorType)
         {
-            return typeof(Reflector).GetTypeInfo().GetDeclaredMethod(nameof(ForRequest2)).MakeGenericMethod(declaringType, responseErrorType);
+            return typeof(Reflector).GetTypeInfo().GetDeclaredMethod(nameof(ForRequestAsync2)).MakeGenericMethod(declaringType, responseErrorType);
         }
 
         private static NotificationHandlerDelegate ForNotification2<T, TParams>(Type targetType, MethodInfo method, HandlerProvider provider)
@@ -240,8 +347,16 @@ namespace LanguageServer
             Type paramsType = (parameters.Length == 1) ? parameters[0].ParameterType : null;
             var returnType = method.ReturnType;
             var openReturnType = returnType.GetGenericTypeDefinition();
+            bool isAsync = false;
             Type resultType;
             Type responseErrorType;
+            if (openReturnType == typeof(Task<>))
+            {
+                isAsync = true;
+                returnType = returnType.GenericTypeArguments[0];
+                openReturnType = returnType.GetGenericTypeDefinition();
+            }
+
             if (openReturnType == typeof(Result<,>))
             {
                 resultType = returnType.GenericTypeArguments[0];
@@ -256,11 +371,22 @@ namespace LanguageServer
             {
                 throw new ArgumentException($"signature mismatch: {method.Name}");
             }
-            var factory =
-                (paramsType != null && resultType != null) ? GetFactoryForRequest4(method, declaringType, paramsType, resultType, responseErrorType) :
-                (paramsType == null && resultType != null) ? GetFactoryForRequest3(method, declaringType, resultType, responseErrorType) :
-                GetFactoryForRequest2(method, declaringType, responseErrorType);
-            return (RequestHandlerDelegate)factory.Invoke(provider, new object[] { targetType, method, provider });
+            if (isAsync)
+            {
+                var factory =
+                    (paramsType != null && resultType != null) ? GetFactoryForRequestAsync4(method, declaringType, paramsType, resultType, responseErrorType) :
+                    (paramsType == null && resultType != null) ? GetFactoryForRequestAsync3(method, declaringType, resultType, responseErrorType) :
+                    GetFactoryForRequestAsync2(method, declaringType, responseErrorType);
+                return (RequestHandlerDelegate)factory.Invoke(provider, new object[] { targetType, method, provider });
+            }
+            else
+            {
+                var factory =
+                    (paramsType != null && resultType != null) ? GetFactoryForRequest4(method, declaringType, paramsType, resultType, responseErrorType) :
+                    (paramsType == null && resultType != null) ? GetFactoryForRequest3(method, declaringType, resultType, responseErrorType) :
+                    GetFactoryForRequest2(method, declaringType, responseErrorType);
+                return (RequestHandlerDelegate)factory.Invoke(provider, new object[] { targetType, method, provider });
+            }
         }
 
         internal static NotificationHandlerDelegate CreateNotificationHandlerDelegate(Type targetType, MethodInfo method, HandlerProvider provider)

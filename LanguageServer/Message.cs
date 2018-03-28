@@ -130,6 +130,14 @@ namespace LanguageServer
     {
         public T @params { get; set; }
     }
+    
+    public class ResponseErrorException : Exception
+    {
+        public ResponseErrorException() { }
+        public ResponseErrorException(string message) : base(message) { }
+        public ResponseErrorException(string message, Exception inner) : base(message, inner) { }
+        public ResponseErrorException(ResponseError error) : this($"Response error {error.code.ToString()}: {error.message}") { }
+    }
 
     public class ResponseError
     {

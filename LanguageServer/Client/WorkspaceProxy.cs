@@ -16,18 +16,16 @@ namespace LanguageServer.Client
             _connection = connection;
         }
 
-        public Task<Result<ApplyWorkspaceEditResponse, ResponseError>> ApplyEdit(ApplyWorkspaceEditParams @params)
+        public async Task<Result<ApplyWorkspaceEditResponse, ResponseError>> ApplyEdit(ApplyWorkspaceEditParams @params)
         {
-            var tcs = new TaskCompletionSource<Result<ApplyWorkspaceEditResponse, ResponseError>>();
-            _connection.SendRequest(
+            return Message.ToResult(
+                await _connection.SendRequest<ResponseMessage<ApplyWorkspaceEditResponse, ResponseError>>(
                 new RequestMessage<ApplyWorkspaceEditParams>
                 {
                     id = IdGenerator.Instance.Next(),
                     method = "workspace/applyEdit",
                     @params = @params
-                },
-                (ResponseMessage<ApplyWorkspaceEditResponse, ResponseError> res) => tcs.TrySetResult(Message.ToResult(res)));
-            return tcs.Task;
+                }));
         }
     }
 }
