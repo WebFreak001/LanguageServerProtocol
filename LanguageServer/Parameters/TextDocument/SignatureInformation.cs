@@ -6,10 +6,10 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class SignatureInformation
     {
-        public string label { get; set; }
+        public string Label { get; set; }
 
-        public string documentation { get; set; }
+        public string Documentation { get; set; }
 
-        public ParameterInformation[] parameters { get; set; }
+        public ParameterInformation[] Parameters { get; set; }
     }
 }

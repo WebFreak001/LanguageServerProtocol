@@ -2,10 +2,10 @@
 {
     public class TextDocumentContentChangeEvent
     {
-        public Range range { get; set; }
+        public Range Range { get; set; }
 
-        public long? rangeLength { get; set; }
+        public long? RangeLength { get; set; }
 
-        public string text { get; set; }
+        public string Text { get; set; }
     }
 }

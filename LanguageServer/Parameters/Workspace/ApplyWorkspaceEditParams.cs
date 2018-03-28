@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.Workspace
 {
     public class ApplyWorkspaceEditParams
     {
-        public WorkspaceEdit edit { get; set; }
+        public WorkspaceEdit Edit { get; set; }
     }
 }

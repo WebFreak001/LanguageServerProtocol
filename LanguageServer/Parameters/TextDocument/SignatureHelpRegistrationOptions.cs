@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class SignatureHelpRegistrationOptions : TextDocumentRegistrationOptions
     {
-        public string[] triggerCharacters { get; set; }
+        public string[] TriggerCharacters { get; set; }
     }
 }

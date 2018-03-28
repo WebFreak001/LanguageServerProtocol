@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class WillSaveTextDocumentParams
     {
-        public TextDocumentIdentifier textDocument { get; set; }
+        public TextDocumentIdentifier TextDocument { get; set; }
 
-        public TextDocumentSaveReason reason { get; set; }
+        public TextDocumentSaveReason Reason { get; set; }
     }
 }

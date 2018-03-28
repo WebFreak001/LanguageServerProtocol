@@ -7,8 +7,8 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class Hover
     {
-        public ArrayOrObject<StringOrObject<MarkedString>, StringOrObject<MarkedString>> contents { get; set; }
+        public ArrayOrObject<StringOrObject<MarkedString>, StringOrObject<MarkedString>> Contents { get; set; }
 
-        public Range range { get; set; }
+        public Range Range { get; set; }
     }
 }

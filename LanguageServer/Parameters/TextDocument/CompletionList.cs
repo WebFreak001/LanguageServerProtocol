@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class CompletionList
     {
-        public bool isIncomplete { get; set; }
+        public bool IsIncomplete { get; set; }
 
-        public CompletionItem[] items { get; set; }
+        public CompletionItem[] Items { get; set; }
     }
 }

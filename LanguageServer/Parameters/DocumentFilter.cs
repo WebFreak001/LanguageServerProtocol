@@ -6,10 +6,10 @@ namespace LanguageServer.Parameters
 {
     public class DocumentFilter
     {
-        public string language { get; set; }
+        public string Language { get; set; }
 
-        public string scheme { get; set; }
+        public string Scheme { get; set; }
 
-        public string pattern { get; set; }
+        public string Pattern { get; set; }
     }
 }

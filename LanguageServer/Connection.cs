@@ -98,7 +98,7 @@ namespace LanguageServer
         private void HandleCancellation(string json)
         {
             var cancellation = (NotificationMessage<CancelParams>)Serializer.Instance.Deserialize(typeof(NotificationMessage<CancelParams>), json);
-            var id = cancellation.@params.id;
+            var id = cancellation.@params.Id;
             if (handlers.TryRemoveCancellationTokenSource(id, out var tokenSource))
             {
                 tokenSource.Cancel();
@@ -131,7 +131,7 @@ namespace LanguageServer
 
         public void SendCancellation(NumberOrString id)
         {
-            var message = new NotificationMessage<CancelParams> { method = "$/cancelRequest", @params = new CancelParams { id = id } };
+            var message = new NotificationMessage<CancelParams> { method = "$/cancelRequest", @params = new CancelParams { Id = id } };
             SendMessage(message);
         }
 

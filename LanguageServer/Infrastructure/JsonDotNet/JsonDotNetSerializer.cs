@@ -1,5 +1,6 @@
 ﻿using LanguageServer.Json;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 
 namespace LanguageServer.Infrastructure.JsonDotNet
@@ -9,7 +10,8 @@ namespace LanguageServer.Infrastructure.JsonDotNet
         private readonly JsonSerializerSettings _settings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
-            Converters = new JsonConverter[] { new EitherConverter() }
+            Converters = new JsonConverter[] { new EitherConverter() },
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
         public override object Deserialize(Type objectType, string json)

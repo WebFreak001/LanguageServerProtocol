@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class CodeActionContext
     {
-        public Diagnostic[] diagnostics { get; set; }
+        public Diagnostic[] Diagnostics { get; set; }
     }
 }

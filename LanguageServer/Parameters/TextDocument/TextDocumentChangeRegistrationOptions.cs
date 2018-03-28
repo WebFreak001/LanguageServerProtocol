@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class TextDocumentChangeRegistrationOptions : TextDocumentRegistrationOptions
     {
-        public TextDocumentSyncKind syncKind { get; set; }
+        public TextDocumentSyncKind SyncKind { get; set; }
     }
 }

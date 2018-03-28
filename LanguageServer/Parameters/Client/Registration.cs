@@ -6,11 +6,11 @@ namespace LanguageServer.Parameters.Client
 {
     public class Registration
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public string method { get; set; }
+        public string Method { get; set; }
 
         // TODO: TextDocumentRegistrationOptions type
-        public dynamic registerOptions { get; set; }
+        public dynamic RegisterOptions { get; set; }
     }
 }

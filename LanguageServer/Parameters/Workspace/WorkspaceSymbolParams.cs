@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.Workspace
 {
     public class WorkspaceSymbolParams
     {
-        public string query { get; set; }
+        public string Query { get; set; }
     }
 }

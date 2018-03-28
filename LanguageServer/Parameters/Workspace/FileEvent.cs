@@ -6,7 +6,7 @@ namespace LanguageServer.Parameters.Workspace
 {
     public class FileEvent
     {
-        public Uri uri { get; set; }
-        public FileChangeType type { get; set; }
+        public Uri Uri { get; set; }
+        public FileChangeType Type { get; set; }
     }
 }

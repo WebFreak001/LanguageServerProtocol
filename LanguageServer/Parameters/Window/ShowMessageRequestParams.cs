@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters.Window
 {
     public class ShowMessageRequestParams
     {
-        public MessageType type { get; set; }
-        public string message { get; set; }
-        public MessageActionItem[] actions { get; set; }
+        public MessageType Type { get; set; }
+        public string Message { get; set; }
+        public MessageActionItem[] Actions { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace LanguageServer.Parameters.Client
 {
     public class Unregistration
     {
-        public string id { get; set; }
-        public string method { get; set; }
+        public string Id { get; set; }
+        public string Method { get; set; }
     }
 }

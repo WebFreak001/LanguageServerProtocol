@@ -6,7 +6,7 @@ namespace LanguageServer.Parameters.Workspace
 {
     public class ExecuteCommandParams
     {
-        public string command { get; set; }
-        public dynamic[] arguments { get; set; }
+        public string Command { get; set; }
+        public dynamic[] Arguments { get; set; }
     }
 }

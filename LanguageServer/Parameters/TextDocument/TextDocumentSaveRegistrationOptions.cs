@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class TextDocumentSaveRegistrationOptions : TextDocumentRegistrationOptions
     {
-        public bool? includeText { get; set; }
+        public bool? IncludeText { get; set; }
     }
 }

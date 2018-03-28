@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class MarkedString
     {
-        public string language { get; set; }
+        public string Language { get; set; }
 
-        public string value { get; set; }
+        public string Value { get; set; }
     }
 }

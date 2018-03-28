@@ -2,7 +2,7 @@
 {
     public class Range
     {
-        public Position start { get; set; }
-        public Position end { get; set; }
+        public Position Start { get; set; }
+        public Position End { get; set; }
     }
 }

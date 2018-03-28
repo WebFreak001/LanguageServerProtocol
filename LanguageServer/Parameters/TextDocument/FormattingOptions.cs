@@ -6,9 +6,9 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class FormattingOptions
     {
-        public int tabSize { get; set; }
+        public int TabSize { get; set; }
 
-        public bool insertSpaces { get; set; }
+        public bool InsertSpaces { get; set; }
 
         // Signature for further properties.
         // [key: string]: boolean | number | string;

@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class DocumentOnTypeFormattingRegistrationOptions : TextDocumentRegistrationOptions
     {
-        public string firstTriggerCharacter { get; set; }
+        public string FirstTriggerCharacter { get; set; }
 
-        public string[] moreTriggerCharacter { get; set; }
+        public string[] MoreTriggerCharacter { get; set; }
     }
 }

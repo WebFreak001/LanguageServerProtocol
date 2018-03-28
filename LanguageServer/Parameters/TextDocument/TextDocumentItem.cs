@@ -6,12 +6,12 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class TextDocumentItem
     {
-        public Uri uri { get; set; }
+        public Uri Uri { get; set; }
 
-        public string languageId { get; set; }
+        public string LanguageId { get; set; }
 
-        public long version { get; set; }
+        public long Version { get; set; }
 
-        public string text { get; set; }
+        public string Text { get; set; }
     }
 }

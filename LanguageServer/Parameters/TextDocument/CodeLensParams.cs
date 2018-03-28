@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class CodeLensParams
     {
-        public TextDocumentIdentifier textDocument { get; set; }
+        public TextDocumentIdentifier TextDocument { get; set; }
     }
 }

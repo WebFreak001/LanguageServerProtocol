@@ -4,6 +4,6 @@ namespace LanguageServer.Parameters.General
 {
     public class CancelParams
     {
-        public NumberOrString id { get; set; }
+        public NumberOrString Id { get; set; }
     }
 }

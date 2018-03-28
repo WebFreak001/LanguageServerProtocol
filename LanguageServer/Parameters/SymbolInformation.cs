@@ -7,9 +7,9 @@ namespace LanguageServer.Parameters
     // textDocument/documentSymbol & workspace/symbol
     public class SymbolInformation
     {
-        public string name { get; set; }
-        public SymbolKind kind { get; set; }
-        public Location location { get; set; }
-        public string containerName { get; set; }
+        public string Name { get; set; }
+        public SymbolKind Kind { get; set; }
+        public Location Location { get; set; }
+        public string ContainerName { get; set; }
     }
 }

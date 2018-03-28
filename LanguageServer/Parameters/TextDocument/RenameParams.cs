@@ -6,10 +6,10 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class RenameParams
     {
-        public TextDocumentIdentifier textDocument { get; set; }
+        public TextDocumentIdentifier TextDocument { get; set; }
 
-        public Position position { get; set; }
+        public Position Position { get; set; }
 
-        public string newName { get; set; }
+        public string NewName { get; set; }
     }
 }

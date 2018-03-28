@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,10 +7,11 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class Command
     {
-        public string title { get; set; }
+        public string Title { get; set; }
 
-        public string command { get; set; }
+        [JsonProperty("command")]
+        public string Name { get; set; }
 
-        public dynamic[] arguments { get; set; }
+        public dynamic[] Arguments { get; set; }
     }
 }

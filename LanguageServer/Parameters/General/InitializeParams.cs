@@ -6,24 +6,24 @@ namespace LanguageServer.Parameters.General
 {
     public class InitializeParams
     {
-        public int? processId { get; set; }
+        public int? ProcessId { get; set; }
 
-        public Uri rootUri { get; set; }
+        public Uri RootUri { get; set; }
 
-        public dynamic initializationOptions { get; set; }
+        public dynamic InitializationOptions { get; set; }
 
-        public ClientCapabilities capabilities { get; set; }
+        public ClientCapabilities Capabilities { get; set; }
 
-        public string trace { get; set; }
+        public string Trace { get; set; }
     }
 
     public class InitializeResult
     {
-        public ServerCapabilities capabilities { get; set; }
+        public ServerCapabilities Capabilities { get; set; }
     }
 
     public class InitializeErrorData
     {
-        public bool retry { get; set; }
+        public bool Retry { get; set; }
     }
 }

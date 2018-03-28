@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class DocumentLinkRegistrationOptions : TextDocumentRegistrationOptions
     {
-        public bool? resolveProvider { get; set; }
+        public bool? ResolveProvider { get; set; }
     }
 }

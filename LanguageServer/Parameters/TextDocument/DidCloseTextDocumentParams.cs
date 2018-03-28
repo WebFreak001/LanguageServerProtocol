@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class DidCloseTextDocumentParams
     {
-        public TextDocumentIdentifier textDocument { get; set; }
+        public TextDocumentIdentifier TextDocument { get; set; }
     }
 }

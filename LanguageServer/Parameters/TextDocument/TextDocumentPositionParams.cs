@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class TextDocumentPositionParams
     {
-        public TextDocumentIdentifier textDocument { get; set; }
+        public TextDocumentIdentifier TextDocument { get; set; }
 
-        public Position position { get; set; }
+        public Position Position { get; set; }
     }
 }

@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.Client
 {
     public class RegistrationParams
     {
-        public Registration[] registrations { get; set; }
+        public Registration[] Registrations { get; set; }
     }
 }

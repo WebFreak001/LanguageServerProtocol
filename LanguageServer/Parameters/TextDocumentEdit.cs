@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters
 {
     public class TextDocumentEdit
     {
-        public VersionedTextDocumentIdentifier textDocument { get; set; }
+        public VersionedTextDocumentIdentifier TextDocument { get; set; }
 
-        public TextEdit[] edits { get; set; }
+        public TextEdit[] Edits { get; set; }
     }
 }

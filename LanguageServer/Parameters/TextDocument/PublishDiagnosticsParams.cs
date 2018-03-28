@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class PublishDiagnosticsParams
     {
-        public Uri uri { get; set; }
+        public Uri Uri { get; set; }
 
-        public Diagnostic[] diagnostics { get; set; }
+        public Diagnostic[] Diagnostics { get; set; }
     }
 }

@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.Workspace
 {
     public class DidChangeWatchedFilesParams
     {
-        public FileEvent[] changes { get; set; }
+        public FileEvent[] Changes { get; set; }
     }
 }

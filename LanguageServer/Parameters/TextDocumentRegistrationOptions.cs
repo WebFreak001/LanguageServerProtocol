@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters
 {
     public class TextDocumentRegistrationOptions
     {
-        public DocumentFilter[] documentSelector { get; set; }
+        public DocumentFilter[] DocumentSelector { get; set; }
     }
 }

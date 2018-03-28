@@ -6,8 +6,8 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class DocumentLink
     {
-        public Range range { get; set; }
+        public Range Range { get; set; }
 
-        public Uri target { get; set; }
+        public Uri Target { get; set; }
     }
 }

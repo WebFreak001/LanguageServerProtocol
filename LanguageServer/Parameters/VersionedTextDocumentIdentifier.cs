@@ -2,6 +2,6 @@
 {
     public class VersionedTextDocumentIdentifier : TextDocumentIdentifier
     {
-        public long version { get; set; }
+        public long Version { get; set; }
     }
 }

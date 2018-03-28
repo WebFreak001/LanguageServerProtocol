@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.Workspace
 {
     public class ApplyWorkspaceEditResponse
     {
-        public bool applied { get; set; }
+        public bool Applied { get; set; }
     }
 }

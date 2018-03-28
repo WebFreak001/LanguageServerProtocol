@@ -6,6 +6,6 @@ namespace LanguageServer.Parameters.Workspace
 {
     public class ExecuteCommandRegistrationOptions
     {
-        public string[] commands { get; set; }
+        public string[] Commands { get; set; }
     }
 }

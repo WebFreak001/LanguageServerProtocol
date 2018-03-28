@@ -6,10 +6,10 @@ namespace LanguageServer.Parameters.TextDocument
 {
     public class CodeLens
     {
-        public Range range { get; set; }
+        public Range Range { get; set; }
 
-        public Command command { get; set; }
+        public Command Command { get; set; }
 
-        public dynamic any { get; set; }
+        public dynamic Any { get; set; }
     }
 }
