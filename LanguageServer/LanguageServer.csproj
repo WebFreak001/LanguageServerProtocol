@@ -1,16 +1,165 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <Description>A library to handle Language Server Protocol (https://github.com/Microsoft/language-server-protocol).</Description>
-    <Company />
-    <Copyright>Copyright © 2017 INOMATA Kentaro</Copyright>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{99612DDD-EBF1-4CD8-9A32-5CCF1A3D4040}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LanguageServer</RootNamespace>
+    <AssemblyName>LanguageServer</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-    <PackageReference Include="Matarillo.IO" Version="1.0.0" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Include="Client\ClientProxy.cs" />
+    <Compile Include="Client\Proxy.cs" />
+    <Compile Include="Client\TextDocumentProxy.cs" />
+    <Compile Include="Client\WindowProxy.cs" />
+    <Compile Include="Client\WorkspaceProxy.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="Handler.cs" />
+    <Compile Include="HandlerProvider.cs" />
+    <Compile Include="Infrastructure\JsonDotNet\EitherConverter.cs" />
+    <Compile Include="Infrastructure\JsonDotNet\JsonDotNetSerializer.cs" />
+    <Compile Include="JsonRpcMethodAttribute.cs" />
+    <Compile Include="Json\ArrayOrObject.cs" />
+    <Compile Include="Json\Either.cs" />
+    <Compile Include="Json\EitherTag.cs" />
+    <Compile Include="Json\IEither.cs" />
+    <Compile Include="Json\JsonDataType.cs" />
+    <Compile Include="Json\NumberOrObject.cs" />
+    <Compile Include="Json\NumberOrString.cs" />
+    <Compile Include="Json\Serializer.cs" />
+    <Compile Include="Json\StringOrObject.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="Parameters\Client\IdGenerator.cs" />
+    <Compile Include="Parameters\Client\Registration.cs" />
+    <Compile Include="Parameters\Client\RegistrationParams.cs" />
+    <Compile Include="Parameters\Client\Unregistration.cs" />
+    <Compile Include="Parameters\Client\UnregistrationParams.cs" />
+    <Compile Include="Parameters\DocumentFilter.cs" />
+    <Compile Include="Parameters\General\CancelParams.cs" />
+    <Compile Include="Parameters\General\ClientCapabilities.cs" />
+    <Compile Include="Parameters\General\InitializeParams.cs" />
+    <Compile Include="Parameters\General\Options.cs" />
+    <Compile Include="Parameters\General\ServerCapabilities.cs" />
+    <Compile Include="Parameters\Location.cs" />
+    <Compile Include="Parameters\Position.cs" />
+    <Compile Include="Parameters\Range.cs" />
+    <Compile Include="Parameters\SymbolInformation.cs" />
+    <Compile Include="Parameters\SymbolKind.cs" />
+    <Compile Include="Parameters\TextDocumentEdit.cs" />
+    <Compile Include="Parameters\TextDocumentIdentifier.cs" />
+    <Compile Include="Parameters\TextDocumentRegistrationOptions.cs" />
+    <Compile Include="Parameters\TextDocumentSyncKind.cs" />
+    <Compile Include="Parameters\TextDocument\CodeActionContext.cs" />
+    <Compile Include="Parameters\TextDocument\CodeActionParams.cs" />
+    <Compile Include="Parameters\TextDocument\CodeLens.cs" />
+    <Compile Include="Parameters\TextDocument\CodeLensParams.cs" />
+    <Compile Include="Parameters\TextDocument\CodeLensRegistrationOptions.cs" />
+    <Compile Include="Parameters\TextDocument\Command.cs" />
+    <Compile Include="Parameters\TextDocument\CompletionItem.cs" />
+    <Compile Include="Parameters\TextDocument\CompletionItemKind.cs" />
+    <Compile Include="Parameters\TextDocument\CompletionList.cs" />
+    <Compile Include="Parameters\TextDocument\CompletionRegistrationOptions.cs" />
+    <Compile Include="Parameters\TextDocument\Diagnostic.cs" />
+    <Compile Include="Parameters\TextDocument\DiagnosticSeverity.cs" />
+    <Compile Include="Parameters\TextDocument\DidChangeTextDocumentParams.cs" />
+    <Compile Include="Parameters\TextDocument\DidCloseTextDocumentParams.cs" />
+    <Compile Include="Parameters\TextDocument\DidOpenTextDocumentParams.cs" />
+    <Compile Include="Parameters\TextDocument\DidSaveTextDocumentParams.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentFormattingParams.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentHighlight.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentHighlightKind.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentLink.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentLinkParams.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentLinkRegistrationOptions.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentOnTypeFormattingParams.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentOnTypeFormattingRegistrationOptions.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentRangeFormattingParams.cs" />
+    <Compile Include="Parameters\TextDocument\DocumentSymbolParams.cs" />
+    <Compile Include="Parameters\TextDocument\FormattingOptions.cs" />
+    <Compile Include="Parameters\TextDocument\Hover.cs" />
+    <Compile Include="Parameters\TextDocument\InsertTextFormat.cs" />
+    <Compile Include="Parameters\TextDocument\MarkedString.cs" />
+    <Compile Include="Parameters\TextDocument\ParameterInformation.cs" />
+    <Compile Include="Parameters\TextDocument\PublishDiagnosticsParams.cs" />
+    <Compile Include="Parameters\TextDocument\ReferenceContext.cs" />
+    <Compile Include="Parameters\TextDocument\ReferenceParams.cs" />
+    <Compile Include="Parameters\TextDocument\RenameParams.cs" />
+    <Compile Include="Parameters\TextDocument\SignatureHelp.cs" />
+    <Compile Include="Parameters\TextDocument\SignatureHelpRegistrationOptions.cs" />
+    <Compile Include="Parameters\TextDocument\SignatureInformation.cs" />
+    <Compile Include="Parameters\TextDocument\TextDocumentChangeRegistrationOptions.cs" />
+    <Compile Include="Parameters\TextDocument\TextDocumentContentChangeEvent.cs" />
+    <Compile Include="Parameters\TextDocument\TextDocumentItem.cs" />
+    <Compile Include="Parameters\TextDocument\TextDocumentPositionParams.cs" />
+    <Compile Include="Parameters\TextDocument\TextDocumentSaveReason.cs" />
+    <Compile Include="Parameters\TextDocument\TextDocumentSaveRegistrationOptions.cs" />
+    <Compile Include="Parameters\TextDocument\WillSaveTextDocumentParams.cs" />
+    <Compile Include="Parameters\TextEdit.cs" />
+    <Compile Include="Parameters\VersionedTextDocumentIdentifier.cs" />
+    <Compile Include="Parameters\Void.cs" />
+    <Compile Include="Parameters\Window\LogMessageParams.cs" />
+    <Compile Include="Parameters\Window\MessageActionItem.cs" />
+    <Compile Include="Parameters\Window\MessageType.cs" />
+    <Compile Include="Parameters\Window\ShowMessageParams.cs" />
+    <Compile Include="Parameters\Window\ShowMessageRequestParams.cs" />
+    <Compile Include="Parameters\WorkspaceEdit.cs" />
+    <Compile Include="Parameters\Workspace\ApplyWorkspaceEditParams.cs" />
+    <Compile Include="Parameters\Workspace\ApplyWorkspaceEditResponse.cs" />
+    <Compile Include="Parameters\Workspace\DidChangeConfigurationParams.cs" />
+    <Compile Include="Parameters\Workspace\DidChangeWatchedFilesParams.cs" />
+    <Compile Include="Parameters\Workspace\ExecuteCommandParams.cs" />
+    <Compile Include="Parameters\Workspace\ExecuteCommandRegistrationOptions.cs" />
+    <Compile Include="Parameters\Workspace\FileChangeType.cs" />
+    <Compile Include="Parameters\Workspace\FileEvent.cs" />
+    <Compile Include="Parameters\Workspace\WorkspaceSymbolParams.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflector.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="Server\GeneralServiceTemplate.cs" />
+    <Compile Include="Server\TextDocumentServiceTemplate.cs" />
+    <Compile Include="Server\WorkspaceServiceTemplate.cs" />
+    <Compile Include="Service.cs" />
+    <Compile Include="ServiceConnection.cs" />
+    <Compile Include="SyncDictionary.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,5 @@
 ﻿using LanguageServer.Json;
 using LanguageServer.Parameters.General;
-using Matarillo.IO;
 using System;
 using System.IO;
 using System.Linq;
@@ -13,10 +12,7 @@ namespace LanguageServer
 {
     public class Connection
     {
-        private ProtocolReader input;
-        private const byte CR = (byte)13;
-        private const byte LF = (byte)10;
-        private readonly byte[] separator = { CR, LF };
+        private Stream input;
         private Stream output;
         private readonly object outputLock = new object();
         private readonly Handlers handlers = new Handlers();
@@ -25,7 +21,7 @@ namespace LanguageServer
 
         public Connection(Stream input, Stream output)
         {
-            this.input = new ProtocolReader(input);
+            this.input = input;
             this.output = output;
         }
 
@@ -86,7 +82,8 @@ namespace LanguageServer
             }
             else
             {
-                SendMessage(new VoidResponseMessage<ResponseError> {
+                SendMessage(new VoidResponseMessage<ResponseError>
+                {
                     id = id,
                     error = Message.MethodNotFound()
                 });
@@ -165,31 +162,61 @@ namespace LanguageServer
             }
         }
 
+        private byte[] gbuffer = new byte[1024 * 1024];
+        private int pos = 0;
+
         private async Task<string> Read()
         {
             var contentLength = 0;
-            var headerBytes = await input.ReadToSeparatorAsync(separator);
-            while (headerBytes.Length != 0)
+            int len;
+            while (true)
             {
-                var headerLine = Encoding.ASCII.GetString(headerBytes);
-                var position = headerLine.IndexOf(": ");
-                if (position >= 0)
+                bool end = false;
+                len = await input.ReadAsync(gbuffer, pos, Math.Min(1024, gbuffer.Length - pos));
+                pos += len;
+                while (true)
                 {
-                    var name = headerLine.Substring(0, position);
-                    var value = headerLine.Substring(position + 2);
-                    if (string.Equals(name, "Content-Length", StringComparison.Ordinal))
+                    var index = Array.IndexOf(gbuffer, (byte)'\n', 0, len);
+                    if (index < 1 || gbuffer[index - 1] != (byte)'\r')
+                        break;
+                    var headerLine = Encoding.ASCII.GetString(gbuffer, 0, index - 1);
+                    Array.Copy(gbuffer, index + 1, gbuffer, 0, gbuffer.Length - index - 1);
+                    pos -= index + 1;
+                    var position = headerLine.IndexOf(": ");
+                    if (position >= 0)
                     {
-                        int.TryParse(value, out contentLength);
+                        var name = headerLine.Substring(0, position);
+                        var value = headerLine.Substring(position + 2);
+                        if (string.Equals(name, "Content-Length", StringComparison.Ordinal))
+                        {
+                            int.TryParse(value, out contentLength);
+                        }
+                    }
+                    if (headerLine == "")
+                    {
+                        end = true;
+                        break;
                     }
                 }
-                headerBytes = await input.ReadToSeparatorAsync(separator);
+                if (end)
+                    break;
             }
             if (contentLength == 0)
             {
                 return "";
             }
-            var contentBytes = await input.ReadBytesAsync(contentLength);
-            return Encoding.UTF8.GetString(contentBytes);
+            if (contentLength > gbuffer.Length)
+                Array.Resize(ref gbuffer, contentLength);
+
+            while (pos < contentLength)
+            {
+                len = await input.ReadAsync(gbuffer, pos, contentLength - pos);
+                pos += len;
+            }
+            string ret = Encoding.UTF8.GetString(gbuffer, 0, contentLength);
+            Array.Copy(gbuffer, contentLength, gbuffer, 0, gbuffer.Length - contentLength);
+            pos -= contentLength;
+            return ret;
         }
     }
 }
